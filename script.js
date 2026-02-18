@@ -1,198 +1,45 @@
-window.addEventListener("DOMContentLoaded", () => {
-
 const game = document.getElementById("game");
 const player = document.getElementById("player");
 const scoreText = document.getElementById("score");
-
-const startOverlay = document.getElementById("startOverlay");
 const gameOverOverlay = document.getElementById("gameOverOverlay");
-
-const rankingList = document.getElementById("ranking");
-const finalRankingList = document.getElementById("finalRanking");
-
-const nicknameInput = document.getElementById("nicknameInput");
-const startBtn = document.getElementById("startBtn");
-const restartBtn = document.getElementById("restartBtn");
 const finalScoreText = document.getElementById("finalScore");
 
-let gameStarted = false;
-let gameOver = false;
-let blocks = [];
 let score = 0;
-let speed = 3;
-let nickname = "";
-let blockInterval;
+let gameRunning = true;
 
-
-/* 랭킹 */
-function loadRanking() {
-  return JSON.parse(localStorage.getItem("ranking")) || [];
-}
-
-function saveRanking(name, score) {
-  const ranking = loadRanking();
-  ranking.push({ name, score });
-  ranking.sort((a, b) => b.score - a.score);
-  localStorage.setItem("ranking", JSON.stringify(ranking));
-}
-
-function renderRanking(target, limit = null) {
-  let ranking = loadRanking();
-  if (limit) ranking = ranking.slice(0, limit);
-
-  target.innerHTML = "";
-  ranking.forEach((r, i) => {
-    const li = document.createElement("li");
-    li.innerText = `${i + 1}. ${r.name} - ${r.score}점`;
-    target.appendChild(li);
-  });
-}
-
-
-/* 플레이어 이동 */
-game.addEventListener("mousemove", e => {
-  if (!gameStarted) return;
-
-  const rect = game.getBoundingClientRect();
-  let x = e.clientX - rect.left - player.offsetWidth / 2;
-  x = Math.max(0, Math.min(x, game.clientWidth - player.offsetWidth));
-  player.style.left = x + "px";
+// 🔥 터치 확대 방지 추가 보호 코드
+document.addEventListener("gesturestart", function (e) {
+  e.preventDefault();
 });
 
-game.addEventListener("touchmove", e => {
-  if (!gameStarted) return;
+document.addEventListener("dblclick", function (e) {
   e.preventDefault();
-
-  const rect = game.getBoundingClientRect();
-  const touch = e.touches[0];
-
-  let x = touch.clientX - rect.left - player.offsetWidth / 2;
-  x = Math.max(0, Math.min(x, game.clientWidth - player.offsetWidth));
-  player.style.left = x + "px";
 }, { passive: false });
 
 
-/* 블럭 생성 */
-function createBlock() {
-  if (!gameStarted || gameOver) return;
-
-  const block = document.createElement("div");
-  block.classList.add("block");
-
-  const isBad = Math.random() < 0.3;
-  block.classList.add(isBad ? "bad" : "good");
-  block.dataset.type = isBad ? "bad" : "good";
-
-  game.appendChild(block);
-
-  block.style.left =
-    Math.random() * (game.clientWidth - 60) + "px";
-
-  block.style.top = "0px";
-
-  blocks.push(block);
+// 점수 증가 예시
+function increaseScore() {
+  if (!gameRunning) return;
+  score++;
+  scoreText.textContent = "Score: " + score;
 }
 
+// 게임오버
+function gameOver() {
+  gameRunning = false;
+  finalScoreText.textContent = "Score: " + score + "점";
 
-/* 충돌 체크 */
-function isColliding(a, b) {
-  const ar = a.getBoundingClientRect();
-  const br = b.getBoundingClientRect();
-
-  return !(
-    ar.top > br.bottom ||
-    ar.bottom < br.top ||
-    ar.right < br.left ||
-    ar.left > br.right
-  );
+  // 🔥 튀어나오는 이미지 생성 코드 없음
+  gameOverOverlay.classList.remove("hidden");
 }
 
-
-/* 게임 루프 */
-function update() {
-  if (!gameStarted || gameOver) return;
-
-  for (let i = blocks.length - 1; i >= 0; i--) {
-    const block = blocks[i];
-    block.style.top = block.offsetTop + speed + "px";
-
-    if (isColliding(player, block)) {
-      if (block.dataset.type === "bad") {
-        endGame();
-        return;
-      }
-
-      block.remove();
-      blocks.splice(i, 1);
-      score++;
-      scoreText.innerText = "Score: " + score;
-      continue;
-    }
-
-    if (block.offsetTop > game.clientHeight) {
-      if (block.dataset.type === "good") {
-        endGame();
-        return;
-      }
-
-      block.remove();
-      blocks.splice(i, 1);
-    }
-  }
-
-  requestAnimationFrame(update);
-}
-
-
-/* 시작 */
-startBtn.addEventListener("click", () => {
-
-  nickname = nicknameInput.value.trim();
-  if (!nickname) {
-    alert("닉네임 입력!");
-    return;
-  }
-
-  startOverlay.style.display = "none";
-
-  gameStarted = true;
-  gameOver = false;
+// 다시하기
+function restartGame() {
   score = 0;
-  speed = 3;
-
-  scoreText.innerText = "Score: 0";
-
-  blockInterval = setInterval(createBlock, 800);
-  requestAnimationFrame(update);
-});
-
-
-/* 종료 */
-function endGame() {
-  gameOver = true;
-  gameStarted = false;
-  clearInterval(blockInterval);
-
-  saveRanking(nickname, score);
-  renderRanking(finalRankingList);
-
-  finalScoreText.innerText = `Score: ${score}점`;
-  gameOverOverlay.style.display = "flex";
+  gameRunning = true;
+  scoreText.textContent = "Score: 0";
+  gameOverOverlay.classList.add("hidden");
 }
 
-
-/* 다시하기 */
-restartBtn.addEventListener("click", () => {
-  blocks.forEach(b => b.remove());
-  blocks = [];
-
-  gameOverOverlay.style.display = "none";
-  startOverlay.style.display = "flex";
-
-  renderRanking(rankingList, 3);
-});
-
-
-renderRanking(rankingList, 3);
-
-});
+// 테스트용 (3초 후 게임오버)
+setTimeout(gameOver, 3000);
