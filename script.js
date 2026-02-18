@@ -22,11 +22,10 @@ let nickname = "";
 let blockInterval;
 
 /* =====================
-   랭킹 저장 / 불러오기
+   랭킹
 ===================== */
 function loadRanking() {
-  const data = localStorage.getItem("ranking");
-  return data ? JSON.parse(data) : [];
+  return JSON.parse(localStorage.getItem("ranking")) || [];
 }
 
 function saveRanking(name, score) {
@@ -38,7 +37,7 @@ function saveRanking(name, score) {
 
 function renderRanking(target, limit = null) {
   let ranking = loadRanking();
-  if (limit !== null) ranking = ranking.slice(0, limit);
+  if (limit) ranking = ranking.slice(0, limit);
 
   target.innerHTML = "";
   ranking.forEach((r, i) => {
@@ -49,7 +48,7 @@ function renderRanking(target, limit = null) {
 }
 
 /* =====================
-   플레이어 이동
+   플레이어 이동 (PC)
 ===================== */
 game.addEventListener("mousemove", e => {
   if (!gameStarted) return;
@@ -59,6 +58,21 @@ game.addEventListener("mousemove", e => {
   x = Math.max(0, Math.min(x, game.clientWidth - player.offsetWidth));
   player.style.left = x + "px";
 });
+
+/* =====================
+   플레이어 이동 (모바일)
+===================== */
+game.addEventListener("touchmove", e => {
+  if (!gameStarted) return;
+  e.preventDefault();
+
+  const rect = game.getBoundingClientRect();
+  const touch = e.touches[0];
+
+  let x = touch.clientX - rect.left - player.offsetWidth / 2;
+  x = Math.max(0, Math.min(x, game.clientWidth - player.offsetWidth));
+  player.style.left = x + "px";
+}, { passive: false });
 
 /* =====================
    블럭 생성
@@ -73,7 +87,9 @@ function createBlock() {
   block.classList.add(isBad ? "bad" : "good");
   block.dataset.type = isBad ? "bad" : "good";
 
-  block.style.left = Math.random() * (game.clientWidth - 40) + "px";
+  block.style.left =
+    Math.random() * (game.clientWidth - 40) + "px";
+
   block.style.top = "0px";
 
   game.appendChild(block);
@@ -100,7 +116,8 @@ function isColliding(a, b) {
 function update() {
   if (!gameStarted || gameOver) return;
 
-  blocks.forEach((block, i) => {
+  for (let i = blocks.length - 1; i >= 0; i--) {
+    const block = blocks[i];
     block.style.top = block.offsetTop + speed + "px";
 
     if (isColliding(player, block)) {
@@ -113,9 +130,12 @@ function update() {
       blocks.splice(i, 1);
       score++;
       scoreText.innerText = "Score: " + score;
+
+      // 점수 올라갈수록 속도 증가
+      if (score % 5 === 0) speed += 0.5;
+      continue;
     }
 
-    // 초록 블럭 놓치면 게임 오버
     if (block.offsetTop > game.clientHeight) {
       if (block.dataset.type === "good") {
         endGame();
@@ -124,29 +144,32 @@ function update() {
       block.remove();
       blocks.splice(i, 1);
     }
-  });
+  }
 
   requestAnimationFrame(update);
 }
 
 /* =====================
-   게임 시작 / 종료
+   시작
 ===================== */
 startBtn.addEventListener("click", () => {
   nickname = nicknameInput.value.trim();
-  if (!nickname) return alert("닉네임을 입력하세요!");
+  if (!nickname) return alert("닉네임 입력!");
 
   startOverlay.style.display = "none";
   gameStarted = true;
   gameOver = false;
   score = 0;
-
+  speed = 3;
   scoreText.innerText = "Score: 0";
 
   blockInterval = setInterval(createBlock, 800);
   update();
 });
 
+/* =====================
+   종료
+===================== */
 function endGame() {
   gameOver = true;
   gameStarted = false;
@@ -159,6 +182,9 @@ function endGame() {
   gameOverOverlay.style.display = "flex";
 }
 
+/* =====================
+   다시하기
+===================== */
 restartBtn.addEventListener("click", () => {
   blocks.forEach(b => b.remove());
   blocks = [];
@@ -169,31 +195,5 @@ restartBtn.addEventListener("click", () => {
   renderRanking(rankingList, 3);
 });
 
-function getHitbox(el, padding = 10) {
-  const r = el.getBoundingClientRect();
-  return {
-    top: r.top + padding,
-    left: r.left + padding,
-    right: r.right - padding,
-    bottom: r.bottom - padding
-  };
-}
-
-function isColliding(a, b) {
-  const ar = getHitbox(a, 12);
-  const br = getHitbox(b, 12);
-
-  return !(
-    ar.top > br.bottom ||
-    ar.bottom < br.top ||
-    ar.right < br.left ||
-    ar.left > br.right
-  );
-}
-
-
-
-/* =====================
-   초기 랭킹 표시
-===================== */
+/* 초기 랭킹 */
 renderRanking(rankingList, 3);
