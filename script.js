@@ -23,6 +23,34 @@ let speed = 3;
 let nickname = "";
 let blockInterval;
 
+
+/* =====================
+   랭킹
+===================== */
+function loadRanking() {
+  return JSON.parse(localStorage.getItem("ranking")) || [];
+}
+
+function saveRanking(name, score) {
+  const ranking = loadRanking();
+  ranking.push({ name, score });
+  ranking.sort((a, b) => b.score - a.score);
+  localStorage.setItem("ranking", JSON.stringify(ranking));
+}
+
+function renderRanking(target, limit = null) {
+  let ranking = loadRanking();
+  if (limit) ranking = ranking.slice(0, limit);
+
+  target.innerHTML = "";
+  ranking.forEach((r, i) => {
+    const li = document.createElement("li");
+    li.innerText = `${i + 1}. ${r.name} - ${r.score}점`;
+    target.appendChild(li);
+  });
+}
+
+
 /* =====================
    플레이어 이동 (PC)
 ===================== */
@@ -36,7 +64,7 @@ game.addEventListener("mousemove", e => {
 });
 
 /* =====================
-   플레이어 이동 (모바일 추가)
+   플레이어 이동 (모바일)
 ===================== */
 game.addEventListener("touchmove", e => {
   if (!gameStarted) return;
@@ -49,6 +77,7 @@ game.addEventListener("touchmove", e => {
   x = Math.max(0, Math.min(x, game.clientWidth - player.offsetWidth));
   player.style.left = x + "px";
 }, { passive: false });
+
 
 /* =====================
    블럭 생성
@@ -63,7 +92,6 @@ function createBlock() {
   block.classList.add(isBad ? "bad" : "good");
   block.dataset.type = isBad ? "bad" : "good";
 
-  // 🔥 블럭 실제 width 기준으로 위치 계산
   game.appendChild(block);
 
   block.style.left =
@@ -73,6 +101,7 @@ function createBlock() {
 
   blocks.push(block);
 }
+
 
 /* =====================
    충돌 체크
@@ -88,6 +117,7 @@ function isColliding(a, b) {
     ar.left > br.right
   );
 }
+
 
 /* =====================
    게임 루프
@@ -117,12 +147,71 @@ function update() {
         endGame();
         return;
       }
+
       block.remove();
       blocks.splice(i, 1);
     }
   }
 
-   });
-
   requestAnimationFrame(update);
 }
+
+
+/* =====================
+   시작
+===================== */
+startBtn.addEventListener("click", () => {
+
+  nickname = nicknameInput.value.trim();
+  if (!nickname) {
+    alert("닉네임 입력!");
+    return;
+  }
+
+  startOverlay.style.display = "none";
+
+  gameStarted = true;
+  gameOver = false;
+  score = 0;
+  speed = 3;
+
+  scoreText.innerText = "Score: 0";
+
+  blockInterval = setInterval(createBlock, 800);
+  update();
+});
+
+
+/* =====================
+   종료
+===================== */
+function endGame() {
+  gameOver = true;
+  gameStarted = false;
+  clearInterval(blockInterval);
+
+  saveRanking(nickname, score);
+  renderRanking(finalRankingList);
+
+  finalScoreText.innerText = `Score: ${score}점`;
+  gameOverOverlay.style.display = "flex";
+}
+
+
+/* =====================
+   다시하기
+===================== */
+restartBtn.addEventListener("click", () => {
+  blocks.forEach(b => b.remove());
+  blocks = [];
+
+  gameOverOverlay.style.display = "none";
+  startOverlay.style.display = "flex";
+
+  renderRanking(rankingList, 3);
+});
+
+
+renderRanking(rankingList, 3);
+
+});
