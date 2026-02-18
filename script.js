@@ -22,32 +22,6 @@ let nickname = "";
 let blockInterval;
 
 /* =====================
-   랭킹
-===================== */
-function loadRanking() {
-  return JSON.parse(localStorage.getItem("ranking")) || [];
-}
-
-function saveRanking(name, score) {
-  const ranking = loadRanking();
-  ranking.push({ name, score });
-  ranking.sort((a, b) => b.score - a.score);
-  localStorage.setItem("ranking", JSON.stringify(ranking));
-}
-
-function renderRanking(target, limit = null) {
-  let ranking = loadRanking();
-  if (limit) ranking = ranking.slice(0, limit);
-
-  target.innerHTML = "";
-  ranking.forEach((r, i) => {
-    const li = document.createElement("li");
-    li.innerText = `${i + 1}. ${r.name} - ${r.score}점`;
-    target.appendChild(li);
-  });
-}
-
-/* =====================
    플레이어 이동 (PC)
 ===================== */
 game.addEventListener("mousemove", e => {
@@ -60,7 +34,7 @@ game.addEventListener("mousemove", e => {
 });
 
 /* =====================
-   플레이어 이동 (모바일)
+   플레이어 이동 (모바일 추가)
 ===================== */
 game.addEventListener("touchmove", e => {
   if (!gameStarted) return;
@@ -87,12 +61,14 @@ function createBlock() {
   block.classList.add(isBad ? "bad" : "good");
   block.dataset.type = isBad ? "bad" : "good";
 
+  // 🔥 블럭 실제 width 기준으로 위치 계산
+  game.appendChild(block);
+
   block.style.left =
-    Math.random() * (game.clientWidth - 40) + "px";
+    Math.random() * (game.clientWidth - block.offsetWidth) + "px";
 
   block.style.top = "0px";
 
-  game.appendChild(block);
   blocks.push(block);
 }
 
@@ -102,6 +78,7 @@ function createBlock() {
 function isColliding(a, b) {
   const ar = a.getBoundingClientRect();
   const br = b.getBoundingClientRect();
+
   return !(
     ar.top > br.bottom ||
     ar.bottom < br.top ||
@@ -130,9 +107,6 @@ function update() {
       blocks.splice(i, 1);
       score++;
       scoreText.innerText = "Score: " + score;
-
-      // 점수 올라갈수록 속도 증가
-      if (score % 5 === 0) speed += 0.5;
       continue;
     }
 
@@ -148,52 +122,3 @@ function update() {
 
   requestAnimationFrame(update);
 }
-
-/* =====================
-   시작
-===================== */
-startBtn.addEventListener("click", () => {
-  nickname = nicknameInput.value.trim();
-  if (!nickname) return alert("닉네임 입력!");
-
-  startOverlay.style.display = "none";
-  gameStarted = true;
-  gameOver = false;
-  score = 0;
-  speed = 3;
-  scoreText.innerText = "Score: 0";
-
-  blockInterval = setInterval(createBlock, 800);
-  update();
-});
-
-/* =====================
-   종료
-===================== */
-function endGame() {
-  gameOver = true;
-  gameStarted = false;
-  clearInterval(blockInterval);
-
-  saveRanking(nickname, score);
-  renderRanking(finalRankingList);
-
-  finalScoreText.innerText = `Score: ${score}점`;
-  gameOverOverlay.style.display = "flex";
-}
-
-/* =====================
-   다시하기
-===================== */
-restartBtn.addEventListener("click", () => {
-  blocks.forEach(b => b.remove());
-  blocks = [];
-
-  gameOverOverlay.style.display = "none";
-  startOverlay.style.display = "flex";
-
-  renderRanking(rankingList, 3);
-});
-
-/* 초기 랭킹 */
-renderRanking(rankingList, 3);
