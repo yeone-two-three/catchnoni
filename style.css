@@ -1,116 +1,45 @@
-@font-face {
-    font-family: 'YPairing';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-4@1.1/YPairingFont-Bd.woff2') format('woff2');
-    font-weight: 700;
-    font-display: swap;
-}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Block Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-body {
-  margin: 0;
-  background: #e4bbbb;
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  overflow-x: hidden; /* 모바일 가로 스크롤 방지 */
-}
+<h2 id="score">Score: 0</h2>
 
-#score {
-  padding: 10px;
-  font-size: 18px;
-  color: rgb(151, 71, 71);
-  font-family: 'YPairing';
-}
+<div id="game">
 
-#game {
-  position: relative;
-  width: 90vw;
-  max-width: 400px;
+  <div id="player"></div>
 
-  height: 135vw;
-  max-height: 600px;
+  <!-- 시작 화면 -->
+  <div id="startOverlay" class="overlay">
+    <div class="overlay-content">
+      <h2>게임 시작</h2>
+      <input type="text" id="nicknameInput" placeholder="닉네임 입력" />
+      <button id="startBtn">START</button>
 
-  background-image: url("inthesea.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+      <h3>🏆 TOP 3</h3>
+      <ul id="ranking"></ul>
+    </div>
+  </div>
 
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 30px;
-}
+  <!-- 게임 오버 화면 -->
+  <div id="gameOverOverlay" class="overlay" style="display:none;">
+    <div class="overlay-content">
+      <h2>GAME OVER</h2>
+      <p id="finalScore"></p>
+      <button id="restartBtn">다시하기</button>
 
-/* 🔥 플레이어 반응형 대응 */
-#player {
-  position: absolute;
-  bottom: 0px;
+      <h3>🏆 전체 랭킹</h3>
+      <ul id="finalRanking"></ul>
+    </div>
+  </div>
 
-  width: 25vw;          /* 모바일 대응 */
-  max-width: 100px;
+</div>
 
-  height: 37vw;
-  max-height: 150px;
-
-  background-image: url("handnetktkt.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-/* 기본 블럭 */
-.block {
-  position: absolute;
-}
-
-/* 좋은 블럭 */
-.good {
-  background-image: url("nonifish.png");
-  background-size: cover;
-  background-position: center;
-
-  width: 20vw;
-  max-width: 80px;
-
-  height: 20vw;
-  max-height: 80px;
-}
-
-/* 나쁜 블럭 */
-.bad {
-  background-image: url("appleeee.png");
-  background-size: cover;
-  background-position: center;
-
-  width: 10vw;
-  max-width: 40px;
-
-  height: 10vw;
-  max-height: 40px;
-}
-
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgb(151, 135, 113);
-  font-family: 'YPairing';
-}
-
-.overlay-content {
-  background: #eadab7;
-  padding: 20px;
-  width: 300px;
-  border-radius: 8px;
-}
-
-ul {
-  padding: 0;
-  list-style: none;
-}
-
-button {
-  margin-top: 10px;
-  padding: 8px 16px;
-}
+<script src="script.js"></script>
+</body>
+</html>
