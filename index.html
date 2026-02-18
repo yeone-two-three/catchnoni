@@ -16,22 +16,26 @@
 
   <!-- 시작 화면 -->
   <div id="startOverlay" class="overlay">
-    <h2>게임 시작</h2>
-    <input type="text" id="nicknameInput" placeholder="닉네임 입력" />
-    <button id="startBtn">START</button>
+    <div class="overlay-content">
+      <h2>게임 시작</h2>
+      <input type="text" id="nicknameInput" placeholder="닉네임 입력" />
+      <button id="startBtn">START</button>
 
-    <h3>🏆 TOP 3</h3>
-    <ul id="ranking"></ul>
+      <h3>🏆 TOP 3</h3>
+      <ul id="ranking"></ul>
+    </div>
   </div>
 
   <!-- 게임 오버 화면 -->
   <div id="gameOverOverlay" class="overlay" style="display:none;">
-    <h2>GAME OVER</h2>
-    <p id="finalScore"></p>
-    <button id="restartBtn">다시하기</button>
+    <div class="overlay-content">
+      <h2>GAME OVER</h2>
+      <p id="finalScore"></p>
+      <button id="restartBtn">다시하기</button>
 
-    <h3>🏆 전체 랭킹</h3>
-    <ul id="finalRanking"></ul>
+      <h3>🏆 전체 랭킹</h3>
+      <ul id="finalRanking"></ul>
+    </div>
   </div>
 
 </div>
