@@ -1,45 +1,110 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Block Game</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+@font-face {
+  font-family: 'YPairing';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-4@1.1/YPairingFont-Bd.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
 
-<h2 id="score">Score: 0</h2>
+body {
+  margin: 0;
+  background: #e4bbbb;
+  text-align: center;
+  overflow-x: hidden;
+}
 
-<div id="game">
+#score {
+  padding: 10px;
+  font-size: 18px;
+  color: rgb(151, 71, 71);
+  font-family: 'YPairing';
+}
 
-  <div id="player"></div>
+#game {
+  position: relative;
+  width: 90vw;
+  max-width: 400px;
+  height: 135vw;
+  max-height: 600px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 30px;
 
-  <!-- 시작 화면 -->
-  <div id="startOverlay" class="overlay">
-    <div class="overlay-content">
-      <h2>게임 시작</h2>
-      <input type="text" id="nicknameInput" placeholder="닉네임 입력" />
-      <button id="startBtn">START</button>
+  background-image: url("inthesea.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-      <h3>🏆 TOP 3</h3>
-      <ul id="ranking"></ul>
-    </div>
-  </div>
+#player {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  <!-- 게임 오버 화면 -->
-  <div id="gameOverOverlay" class="overlay" style="display:none;">
-    <div class="overlay-content">
-      <h2>GAME OVER</h2>
-      <p id="finalScore"></p>
-      <button id="restartBtn">다시하기</button>
+  width: 25vw;
+  max-width: 100px;
+  height: 37vw;
+  max-height: 150px;
 
-      <h3>🏆 전체 랭킹</h3>
-      <ul id="finalRanking"></ul>
-    </div>
-  </div>
+  background-image: url("handnetktkt.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-</div>
+.block {
+  position: absolute;
+}
 
-<script src="script.js"></script>
-</body>
-</html>
+.good {
+  background-image: url("nonifish.png");
+  background-size: cover;
+  background-position: center;
+
+  width: 20vw;
+  max-width: 80px;
+  height: 20vw;
+  max-height: 80px;
+}
+
+.bad {
+  background-image: url("appleeee.png");
+  background-size: cover;
+  background-position: center;
+
+  width: 10vw;
+  max-width: 40px;
+  height: 10vw;
+  max-height: 40px;
+}
+
+/* 🔥 여기 fixed → absolute 로 수정 */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  font-family: 'YPairing';
+  color: rgb(151, 135, 113);
+}
+
+.overlay-content {
+  background: #eadab7;
+  padding: 20px;
+  width: 300px;
+  border-radius: 12px;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
