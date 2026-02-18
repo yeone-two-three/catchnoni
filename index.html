@@ -2,11 +2,8 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  
-  <!-- 🔥 모바일 확대 방지 핵심 -->
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
   <title>Fish Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -18,12 +15,11 @@
     <div id="player">🐟</div>
   </div>
 
-  <!-- 게임오버 창 -->
   <div id="gameOverOverlay" class="hidden">
     <div class="modal">
       <h1>GAME OVER</h1>
-      <p id="finalScore"></p>
-      <button onclick="restartGame()">다시하기</button>
+      <p id="finalScore">Score: 0점</p>
+      <button id="restartBtn">다시하기</button>
     </div>
   </div>
 
