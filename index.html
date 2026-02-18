@@ -1,28 +1,42 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Fish Game</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Block Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div id="score">Score: 0</div>
+<div id="score">Score: 0</div>
 
-  <div id="game">
-    <div id="player">🐟</div>
+<div id="game">
+  <div id="player"></div>
+</div>
+
+<!-- 시작 화면 -->
+<div id="startOverlay" class="overlay">
+  <div class="overlay-content">
+    <h2>🏆 랭킹 TOP 3🏆</h2>
+    <ul id="ranking"></ul>
+
+    <input id="nicknameInput" placeholder="닉네임 입력">
+    <button id="startBtn">Start</button>
   </div>
+</div>
 
-  <div id="gameOverOverlay" class="hidden">
-    <div class="modal">
-      <h1>GAME OVER</h1>
-      <p id="finalScore">Score: 0점</p>
-      <button id="restartBtn">다시하기</button>
-    </div>
+<!-- 게임 오버 화면 -->
+<div id="gameOverOverlay" class="overlay" style="display:none;">
+  <div class="overlay-content">
+    <h2>Game Over</h2>
+    <p id="finalScore"></p>
+
+    <h3>전체 랭킹</h3>
+    <ul id="finalRanking"></ul>
+
+    <button id="restartBtn">Restart</button>
   </div>
+</div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
