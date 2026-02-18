@@ -52,7 +52,7 @@ function renderRanking(target, limit = null) {
 
 
 /* =====================
-   플레이어 이동 (PC)
+   플레이어 이동
 ===================== */
 game.addEventListener("mousemove", e => {
   if (!gameStarted) return;
@@ -63,9 +63,6 @@ game.addEventListener("mousemove", e => {
   player.style.left = x + "px";
 });
 
-/* =====================
-   플레이어 이동 (모바일)
-===================== */
 game.addEventListener("touchmove", e => {
   if (!gameStarted) return;
   e.preventDefault();
@@ -95,7 +92,7 @@ function createBlock() {
   game.appendChild(block);
 
   block.style.left =
-    Math.random() * (game.clientWidth - block.offsetWidth) + "px";
+    Math.random() * (game.clientWidth - 60) + "px";
 
   block.style.top = "0px";
 
@@ -178,7 +175,7 @@ startBtn.addEventListener("click", () => {
   scoreText.innerText = "Score: 0";
 
   blockInterval = setInterval(createBlock, 800);
-  update();
+  requestAnimationFrame(update);
 });
 
 
