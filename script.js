@@ -24,9 +24,7 @@ let nickname = "";
 let blockInterval;
 
 
-/* =====================
-   랭킹
-===================== */
+/* 랭킹 */
 function loadRanking() {
   return JSON.parse(localStorage.getItem("ranking")) || [];
 }
@@ -51,9 +49,7 @@ function renderRanking(target, limit = null) {
 }
 
 
-/* =====================
-   플레이어 이동
-===================== */
+/* 플레이어 이동 */
 game.addEventListener("mousemove", e => {
   if (!gameStarted) return;
 
@@ -76,9 +72,7 @@ game.addEventListener("touchmove", e => {
 }, { passive: false });
 
 
-/* =====================
-   블럭 생성
-===================== */
+/* 블럭 생성 */
 function createBlock() {
   if (!gameStarted || gameOver) return;
 
@@ -100,9 +94,7 @@ function createBlock() {
 }
 
 
-/* =====================
-   충돌 체크
-===================== */
+/* 충돌 체크 */
 function isColliding(a, b) {
   const ar = a.getBoundingClientRect();
   const br = b.getBoundingClientRect();
@@ -116,9 +108,7 @@ function isColliding(a, b) {
 }
 
 
-/* =====================
-   게임 루프
-===================== */
+/* 게임 루프 */
 function update() {
   if (!gameStarted || gameOver) return;
 
@@ -154,9 +144,7 @@ function update() {
 }
 
 
-/* =====================
-   시작
-===================== */
+/* 시작 */
 startBtn.addEventListener("click", () => {
 
   nickname = nicknameInput.value.trim();
@@ -179,9 +167,7 @@ startBtn.addEventListener("click", () => {
 });
 
 
-/* =====================
-   종료
-===================== */
+/* 종료 */
 function endGame() {
   gameOver = true;
   gameStarted = false;
@@ -195,9 +181,7 @@ function endGame() {
 }
 
 
-/* =====================
-   다시하기
-===================== */
+/* 다시하기 */
 restartBtn.addEventListener("click", () => {
   blocks.forEach(b => b.remove());
   blocks = [];
