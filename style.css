@@ -11,63 +11,80 @@ body {
   color: white;
   font-family: Arial, sans-serif;
   text-align: center;
+  overflow-x: hidden; /* 모바일 가로 스크롤 방지 */
 }
 
 #score {
   padding: 10px;
   font-size: 18px;
-  color:rgb(151, 71, 71);
+  color: rgb(151, 71, 71);
   font-family: 'YPairing';
 }
 
 #game {
   position: relative;
-   width: 90vw;          /* 모바일 기준 */
-  max-width: 400px;     /* PC 최대 크기 */
+  width: 90vw;
+  max-width: 400px;
 
-  height: 135vw;        /* 400:600 비율 유지 */
+  height: 135vw;
   max-height: 600px;
 
-  background-image:url("inthesea.png");
-  background-size: cover;       
-  background-position: center;  
+  background-image: url("inthesea.png");
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
+
   margin: 0 auto;
   overflow: hidden;
   border-radius: 30px;
 }
 
+/* 🔥 플레이어 반응형 대응 */
 #player {
   position: absolute;
   bottom: 0px;
-  width: 100px;
-  height: 150px;
-  background-image:url("handnetktkt.png");
+
+  width: 25vw;          /* 모바일 대응 */
+  max-width: 100px;
+
+  height: 37vw;
+  max-height: 150px;
+
+  background-image: url("handnetktkt.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
+/* 기본 블럭 */
 .block {
   position: absolute;
-  width: 90px;
-  height: 90px;
 }
 
+/* 좋은 블럭 */
 .good {
   background-image: url("nonifish.png");
   background-size: cover;
   background-position: center;
-  width: 80px;
-  height: 80px;
+
+  width: 20vw;
+  max-width: 80px;
+
+  height: 20vw;
+  max-height: 80px;
 }
 
+/* 나쁜 블럭 */
 .bad {
   background-image: url("appleeee.png");
   background-size: cover;
   background-position: center;
-  width: 40px;
-  height: 40px;
+
+  width: 10vw;
+  max-width: 40px;
+
+  height: 10vw;
+  max-height: 40px;
 }
 
 .overlay {
@@ -77,7 +94,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  color:rgb(151, 135, 113);
+  color: rgb(151, 135, 113);
   font-family: 'YPairing';
 }
 
