@@ -1,3 +1,5 @@
+window.addEventListener("DOMContentLoaded", () => {
+
 const game = document.getElementById("game");
 const player = document.getElementById("player");
 const scoreText = document.getElementById("score");
@@ -119,6 +121,8 @@ function update() {
       blocks.splice(i, 1);
     }
   }
+
+   });
 
   requestAnimationFrame(update);
 }
