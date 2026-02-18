@@ -1,59 +1,99 @@
-html, body {
+@font-face {
+    font-family: 'YPairing';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-4@1.1/YPairingFont-Bd.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+body {
   margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 100%;
-  touch-action: none;
-  font-family: sans-serif;
-  background: #0d1b2a;
-}
-
-/* 점수 */
-#score {
-  position: absolute;
-  top: 20px;
-  width: 100%;
-  text-align: center;
-  font-size: 24px;
+  background: #e4bbbb;
   color: white;
-  z-index: 10;
+  font-family: Arial, sans-serif;
+  text-align: center;
 }
 
-/* 게임 영역 */
+#score {
+  padding: 10px;
+  font-size: 18px;
+  color:rgb(151, 71, 71);
+  font-family: 'YPairing';
+}
+
 #game {
-  width: 100vw;
-  height: 100vh;
   position: relative;
+   width: 90vw;          /* 모바일 기준 */
+  max-width: 400px;     /* PC 최대 크기 */
+
+  height: 135vw;        /* 400:600 비율 유지 */
+  max-height: 600px;
+
+  background-image:url("inthesea.png");
+  background-size: cover;       
+  background-position: center;  
+  background-repeat: no-repeat;
+  margin: 0 auto;
   overflow: hidden;
+  border-radius: 30px;
 }
 
-/* 플레이어 */
 #player {
   position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 40px;
+  bottom: 0px;
+  width: 100px;
+  height: 150px;
+  background-image:url("handnetktkt.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-/* 게임오버 오버레이 */
-#gameOverOverlay {
+.block {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+}
+
+.good {
+  background-image: url("nonifish.png");
+  background-size: cover;
+  background-position: center;
+  width: 80px;
+  height: 80px;
+}
+
+.bad {
+  background-image: url("appleeee.png");
+  background-size: cover;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+}
+
+.overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  color:rgb(151, 135, 113);
+  font-family: 'YPairing';
 }
 
-.hidden {
-  display: none !important;
+.overlay-content {
+  background: #eadab7;
+  padding: 20px;
+  width: 300px;
+  border-radius: 8px;
 }
 
-.modal {
-  background: #f3e3c2;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 16px;
 }
