@@ -1,132 +1,65 @@
-@font-face {
-  font-family: 'YPairing';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-4@1.1/YPairingFont-Bd.woff2') format('woff2');
-  font-weight: 700;
-  font-display: swap;
-}
-
-body {
+/* 🔥 기본 화면 고정 */
+html, body {
   margin: 0;
-  background: #e4bbbb;
-  text-align: center;
-  overflow-x: hidden;
-}
-
-#score {
-  padding: 10px;
-  font-size: 18px;
-  color: rgb(151, 71, 71);
-  font-family: 'YPairing';
-}
-
-#game {
-  position: relative;
-  width: 90vw;
-  max-width: 400px;
-  height: 135vw;
-  max-height: 600px;
-  margin: 0 auto;
+  padding: 0;
   overflow: hidden;
-  border-radius: 30px;
-
-  background-image: url("inthesea.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  transform: translateZ(0); /* 🔥 모바일 배경 튐 방지 */
+  height: 100%;
+  touch-action: manipulation;
+  font-family: sans-serif;
+  background: #0d1b2a;
 }
 
+/* 점수 */
+#score {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  color: white;
+  z-index: 10;
+}
+
+/* 게임 영역 */
+#game {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 플레이어 */
 #player {
   position: absolute;
-  bottom: 0px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
-
-  width: 25vw;
-  max-width: 100px;
-  height: 37vw;
-  max-height: 150px;
-
-  background-image: url("handnetktkt.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  font-size: 40px;
 }
 
-.block {
+/* 게임오버 */
+#gameOverOverlay {
   position: absolute;
-}
-
-.good {
-  background-image: url("nonifish.png");
-  background-size: cover;
-  background-position: center;
-
-  width: 20vw;
-  max-width: 80px;
-  height: 20vw;
-  max-height: 80px;
-}
-
-.bad {
-  background-image: url("appleeee.png");
-  background-size: cover;
-  background-position: center;
-
-  width: 10vw;
-  max-width: 40px;
-  height: 10vw;
-  max-height: 40px;
-}
-
-/* 🔥 overlay 안정화 */
-.overlay {
-  position: absolute;
-  inset: 0;
-  display: none;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.8);
-  z-index: 20;
-  font-family: 'YPairing';
-  color: rgb(151, 135, 113);
 }
 
-/* 시작 화면은 기본 표시 */
-#startOverlay {
-  display: flex;
+.hidden {
+  display: none;
 }
 
-/* 🔥 내부 정렬 완벽 고정 */
-.overlay-content {
-  background: #eadab7;
-  padding: 20px;
-  width: 90%;
-  max-width: 300px;
-  border-radius: 12px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.modal {
+  background: #f3e3c2;
+  padding: 40px;
+  border-radius: 20px;
   text-align: center;
 }
 
-input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 10px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-ul {
-  padding: 0;
-  list-style: none;
-}
-
-button {
-  margin-top: 10px;
-  padding: 8px 16px;
-  cursor: pointer;
+/* 🔥 애니메이션 완전 제거 */
+.pop {
+  animation: none !important;
 }
